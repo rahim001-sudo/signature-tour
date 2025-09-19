@@ -937,6 +937,7 @@ function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [currentCertificate, setCurrentCertificate] = useState(0);
+  const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -1013,8 +1014,38 @@ function Home() {
     return () => clearInterval(interval);
   }, [certificates.length]);
 
+  // Toast notification function
+  const showToast = (message, type = 'success') => {
+    setToast({ show: true, message, type });
+    setTimeout(() => {
+      setToast({ show: false, message: '', type: 'success' });
+    }, 5000);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    e.stopPropagation();
+    
+    // Basic validation
+    if (!formData.name.trim() || !formData.email.trim() || !formData.phone.trim() || !formData.service) {
+      showToast('Please fill in all required fields.', 'error');
+      return;
+    }
+    
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      showToast('Please enter a valid email address.', 'error');
+      return;
+    }
+    
+    // Phone validation
+    const phoneRegex = /^[\d\+\-\s\(\)]+$/;
+    if (!phoneRegex.test(formData.phone) || formData.phone.length < 10) {
+      showToast('Please enter a valid phone number.', 'error');
+      return;
+    }
+    
     setIsLoading(true);
     
     try {
@@ -1022,20 +1053,40 @@ function Home() {
       await addDoc(collection(db, 'enquiries'), {
         ...formData,
         timestamp: serverTimestamp(),
-        status: 'new'
+        status: 'new',
+        userAgent: navigator.userAgent,
+        submittedAt: new Date().toISOString()
       });
       
       console.log('Form submitted successfully to Firebase:', formData);
       
-      // Show success modal instead of alert
-      setShowSuccessModal(true);
+      // Show success toast
+      showToast('✅ Your inquiry has been submitted successfully! We will contact you soon.', 'success');
       
       // Reset form
       setFormData({ name: '', email: '', phone: '', service: '', message: '' });
       
+      // Scroll to top on mobile to show success message
+      if (window.innerWidth < 768) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      
     } catch (error) {
       console.error('Error submitting form:', error);
-      alert('There was an error submitting your enquiry. Please try again.');
+      
+      // More detailed error handling for mobile with toast
+      let errorMessage = '❌ Error submitting your inquiry. ';
+      if (error.code === 'unavailable') {
+        errorMessage += 'Please check your internet connection and try again.';
+      } else if (error.code === 'permission-denied') {
+        errorMessage += 'Permission denied. Please try again later.';
+      } else if (error.code === 'timeout') {
+        errorMessage += 'Request timed out. Please try again.';
+      } else {
+        errorMessage += 'Please try again or contact us directly via WhatsApp.';
+      }
+      
+      showToast(errorMessage, 'error');
     } finally {
       setIsLoading(false);
     }
@@ -1053,81 +1104,102 @@ function Home() {
       image: 'https://images.unsplash.com/photo-1580418827493-f2b22c0a76cb?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
       title: 'Hajj Packages',
       description: 'Complete Hajj pilgrimage with accommodation, meals, and guided rituals',
-      price: 'Starting from ₹3,50,000',
-      buttonColor: 'bg-[#F8F4E5] hover:bg-[#F6FEFE]'
+      price: 'Starting from ₹3,50,000'
     },
     {
       image: 'https://images.unsplash.com/photo-1693590614566-1d3ea9ef32f7?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
       title: 'Umrah Premium',
       description: 'Luxury Umrah experience with 5-star hotels and VIP services',
-      price: 'Starting from ₹1,20,000',
-      buttonColor: 'bg-[#063955] hover:bg-[#2B4B5C]'
+      price: 'Starting from ₹1,20,000'
     },
     {
       image: 'https://images.unsplash.com/photo-1627728734379-a5f8c099763e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
       title: 'Umrah Economy',
       description: 'Budget-friendly Umrah packages with comfortable accommodation',
-      price: 'Starting from ₹80,000',
-      buttonColor: 'bg-[#F6FEFE] hover:bg-[#F8F4E5]'
+      price: 'Starting from ₹80,000'
     },
     {
       image: 'https://images.unsplash.com/photo-1693590614566-1d3ea9ef32f7?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
       title: 'Family Packages',
       description: 'Special family packages with child care and group facilities',
-      price: 'Starting from ₹2,50,000',
-      buttonColor: 'bg-[#2B4B5C] hover:bg-[#063955]'
+      price: 'Starting from ₹2,50,000'
     },
     {
       image: 'https://images.unsplash.com/photo-1627728734379-a5f8c099763e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
       title: 'Ramadan Umrah',
       description: 'Special Ramadan Umrah packages with spiritual programs',
-      price: 'Starting from ₹1,50,000',
-      buttonColor: 'bg-[#F8F4E5] hover:bg-[#F6FEFE]'
+      price: 'Starting from ₹1,50,000'
     },
     {
       image: 'https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
       title: 'Group Tours',
       description: 'Organized group tours with religious scholars and guides',
-      price: 'Starting from ₹95,000',
-      buttonColor: 'bg-[#063955] hover:bg-[#2B4B5C]'
+      price: 'Starting from ₹95,000'
     }
   ];
 
   const services = [
     {
-      image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+      image: 'https://images.unsplash.com/photo-1587019158091-1a103c5dd17f?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       title: 'Flight Booking',
-      description: 'Book domestic and international flights at the best prices',
-      buttonColor: 'bg-[#2B4B5C] hover:bg-[#063955]'
+      description: 'Book domestic and international flights at the best prices'
     },
     {
-      image: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+      image: 'https://images.unsplash.com/photo-1527295110-5145f6b148d0?q=80&w=1131&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       title: 'Train Booking', 
-      description: 'Comfortable train journeys across the country',
-      buttonColor: 'bg-[#F8F4E5] hover:bg-[#F6FEFE]'
+      description: 'Comfortable train journeys across the country'
     },
     {
       image: 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
       title: 'Bus Booking',
-      description: 'Convenient bus travel with premium amenities',
-      buttonColor: 'bg-[#063955] hover:bg-[#2B4B5C]'
+      description: 'Convenient bus travel with premium amenities'
     },
     {
-      image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+      image: 'https://plus.unsplash.com/premium_photo-1697729914552-368899dc4757?q=80&w=1112&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       title: 'Hotel Booking',
-      description: 'Luxury accommodations worldwide',
-      buttonColor: 'bg-[#F6FEFE] hover:bg-[#F8F4E5]'
+      description: 'Luxury accommodations worldwide'
     },
     {
-      image: 'https://images.unsplash.com/photo-1520637836862-4d197d17c90a?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+      image: 'https://images.unsplash.com/photo-1568045374121-f59eb61c7c8d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       title: 'Cruise Booking',
-      description: 'Luxurious cruise experiences on the high seas',
-      buttonColor: 'bg-[#F8F4E5] hover:bg-[#F6FEFE]'
+      description: 'Luxurious cruise experiences on the high seas'
     }
   ];
 
   return (
     <div className="min-h-screen brand-pattern">
+      {/* Toast Notification */}
+      {toast.show && (
+        <div className={`fixed top-4 right-4 z-[9999] px-6 py-4 rounded-lg shadow-2xl border-l-4 transition-all duration-500 transform ${
+          toast.type === 'success' 
+            ? 'bg-green-50 border-green-500 text-green-800' 
+            : 'bg-red-50 border-red-500 text-red-800'
+        } animate-bounce`}>
+          <div className="flex items-center space-x-3">
+            <div className="flex-shrink-0">
+              {toast.type === 'success' ? (
+                <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                  <span className="text-white text-sm">✓</span>
+                </div>
+              ) : (
+                <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center">
+                  <span className="text-white text-sm">×</span>
+                </div>
+              )}
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-medium">{toast.message}</p>
+            </div>
+            <button 
+              onClick={() => setToast({ ...toast, show: false })}
+              className="flex-shrink-0 text-gray-400 hover:text-gray-600 transition-colors duration-200"
+            >
+              <span className="text-lg">×</span>
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <header className="bg-[#063955] shadow-lg sticky top-0 z-50">
         <div className="container mx-auto px-4 py-3">
@@ -1229,7 +1301,7 @@ function Home() {
       </header>
 
       {/* Hero Section */}
-      <section id="home" className="relative min-h-[70vh] flex items-center justify-center py-16">
+      <section id="home" className="relative min-h-[60vh] py-8">
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
@@ -1238,129 +1310,297 @@ function Home() {
         ></div>
         
         <div className="container mx-auto px-4 relative z-10">
-          <div className={`text-center text-white max-w-4xl mx-auto transition-all duration-1000 ${isVisible.home ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <div className="mb-6 flex justify-center">
-              <img 
-                src="/logo.png" 
-                alt="Signature world tour and travels" 
-                className="h-20 w-auto opacity-90 animate-pulse-slow"
-              />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center min-h-[50vh]">
+            {/* Left side - Hero content */}
+            <div className={`text-white transition-all duration-1000 ${isVisible.home ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+              <div className="mb-3">
+                <img 
+                  src="/logo.png" 
+                  alt="Signature world tour and travels" 
+                  className="h-12 w-auto opacity-90 animate-pulse-slow"
+                />
+              </div>
+              <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 animate-fadeIn leading-tight">
+                Your <span className="text-[#F8F4E5]">Dream Journey</span> Starts Here
+              </h1>
+              <p className="text-sm md:text-base mb-3 animate-fadeIn animation-delay-300 text-gray-200 leading-relaxed">
+                From sacred pilgrimages to luxury getaways - experience travel like never before with India's most trusted travel partner.
+              </p>
+              
+              {/* Features */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4">
+                <div className="flex items-center space-x-2 bg-white/10 rounded-lg p-2 backdrop-blur-sm">
+                  <div className="w-6 h-6 bg-[#F2F2F2] rounded-full flex items-center justify-center">
+                    <span className="text-[#063955] text-xs">✓</span>
+                  </div>
+                  <span className="text-xs font-medium">Best Price Guarantee</span>
+                </div>
+                <div className="flex items-center space-x-2 bg-white/10 rounded-lg p-2 backdrop-blur-sm">
+                  <div className="w-6 h-6 bg-[#F2F2F2] rounded-full flex items-center justify-center">
+                    <span className="text-[#063955] text-xs">✓</span>
+                  </div>
+                  <span className="text-xs font-medium">24/7 Expert Support</span>
+                </div>
+                <div className="flex items-center space-x-2 bg-white/10 rounded-lg p-2 backdrop-blur-sm">
+                  <div className="w-6 h-6 bg-[#F2F2F2] rounded-full flex items-center justify-center">
+                    <span className="text-[#063955] text-xs">✓</span>
+                  </div>
+                  <span className="text-xs font-medium">Instant Confirmations</span>
+                </div>
+                <div className="flex items-center space-x-2 bg-white/10 rounded-lg p-2 backdrop-blur-sm">
+                  <div className="w-6 h-6 bg-[#F2F2F2] rounded-full flex items-center justify-center">
+                    <span className="text-[#063955] text-xs">✓</span>
+                  </div>
+                  <span className="text-xs font-medium">Secure Payments</span>
+                </div>
+              </div>
+              
+              <div className="flex flex-col sm:flex-row gap-2 mb-4">
+                <a 
+                  href="#hajj-umrah"
+                  className="bg-gradient-to-r from-[#F8F4E5] to-[#F6FEFE] hover:from-[#F6FEFE] hover:to-[#F8F4E5] text-[#063955] px-4 py-2 text-sm font-bold rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg text-center"
+                >
+                  🕌 View Hajj & Umrah
+                </a>
+                <a 
+                  href="#services"
+                  className="border-2 border-white text-white hover:bg-white hover:text-[#063955] px-4 py-2 text-sm font-bold rounded-full transition-all duration-300 transform hover:scale-105 text-center"
+                >
+                  ✈️ All Services
+                </a>
+              </div>
+              
+              {/* Quick Stats */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2 pt-3 border-t border-[#F8F4E5]/30">
+                <div className="text-center group">
+                  <div className="w-8 h-8 bg-[#F2F2F2]/20 rounded-full flex items-center justify-center mx-auto mb-1 group-hover:bg-[#F2F2F2]/30 transition-colors duration-300">
+                    <span className="text-sm text-[#F8F4E5]">👥</span>
+                  </div>
+                  <div className="text-lg font-bold text-[#F8F4E5] mb-1">50K+</div>
+                  <div className="text-xs text-gray-300">Happy Travelers</div>
+                </div>
+                <div className="text-center group">
+                  <div className="w-8 h-8 bg-[#F2F2F2]/20 rounded-full flex items-center justify-center mx-auto mb-1 group-hover:bg-[#F2F2F2]/30 transition-colors duration-300">
+                    <span className="text-sm text-[#F8F4E5]">🌍</span>
+                  </div>
+                  <div className="text-lg font-bold text-[#F8F4E5] mb-1">200+</div>
+                  <div className="text-xs text-gray-300">Destinations</div>
+                </div>
+                <div className="text-center group">
+                  <div className="w-8 h-8 bg-[#F2F2F2]/20 rounded-full flex items-center justify-center mx-auto mb-1 group-hover:bg-[#F2F2F2]/30 transition-colors duration-300">
+                    <span className="text-sm text-[#F8F4E5]">⭐</span>
+                  </div>
+                  <div className="text-lg font-bold text-[#F8F4E5] mb-1">15+</div>
+                  <div className="text-xs text-gray-300">Years Experience</div>
+                </div>
+                <div className="text-center group">
+                  <div className="w-8 h-8 bg-[#F2F2F2]/20 rounded-full flex items-center justify-center mx-auto mb-1 group-hover:bg-[#F2F2F2]/30 transition-colors duration-300">
+                    <span className="text-sm text-[#F8F4E5]">🕒</span>
+                  </div>
+                  <div className="text-lg font-bold text-[#F8F4E5] mb-1">24/7</div>
+                  <div className="text-xs text-gray-300">Support</div>
+                </div>
+              </div>
             </div>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4 animate-fadeIn leading-tight">
-              Discover Amazing <span className="text-[#F8F4E5]">Places</span>
-            </h1>
-            <p className="text-lg md:text-xl lg:text-2xl mb-8 animate-fadeIn animation-delay-300 text-gray-200 max-w-2xl mx-auto leading-relaxed">
-              Your dream vacation awaits with our premium travel packages
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <button className="bg-[#F8F4E5] hover:bg-[#F6FEFE] text-[#063955] px-8 py-4 text-lg font-bold rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg">
-                EXPLORE NOW
-              </button>
-              <button className="border-2 border-white text-white hover:bg-white hover:text-[#063955] px-8 py-4 text-lg font-bold rounded-full transition-all duration-300 transform hover:scale-105">
-                VIEW PACKAGES
-              </button>
-            </div>
-            
-            {/* Quick Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16 pt-8 border-t border-[#F8F4E5]/30">
-              <div className="text-center group">
-                <div className="w-16 h-16 bg-[#F8F4E5]/20 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:bg-[#F8F4E5]/30 transition-colors duration-300">
-                  <span className="text-2xl">👥</span>
+
+            {/* Right side - Inquiry Form */}
+            <div className={`bg-gradient-to-br from-white via-white to-[#F8F4E5]/30 rounded-2xl p-4 shadow-2xl border-2 border-[#F8F4E5]/40 backdrop-blur-sm transition-all duration-1000 ${isVisible.home ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'} hover:shadow-3xl hover:border-[#F8F4E5]/60`}>
+              <div className="text-center mb-4">
+                <div className="w-12 h-12 bg-[#F2F2F2] rounded-full flex items-center justify-center mx-auto mb-2 shadow-lg">
+                  <span className="text-lg text-[#063955]">✈️</span>
                 </div>
-                <div className="text-3xl md:text-4xl font-bold text-[#F8F4E5] mb-2">50K+</div>
-                <div className="text-sm md:text-base text-gray-300">Happy Travelers</div>
+                <h3 className="text-lg font-bold text-[#063955] mb-1">Quick Inquiry</h3>
+                <p className="text-xs text-gray-600">Get instant quotes & expert advice</p>
+                <div className="w-12 h-0.5 bg-gradient-to-r from-[#F8F4E5] to-[#F6FEFE] mx-auto mt-2 rounded-full"></div>
               </div>
-              <div className="text-center group">
-                <div className="w-16 h-16 bg-[#F8F4E5]/20 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:bg-[#F8F4E5]/30 transition-colors duration-300">
-                  <span className="text-2xl">🌍</span>
+              
+              <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+                <div className="relative">
+                  <span className="absolute left-3 top-3 text-gray-400 text-sm">👤</span>
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="Your Full Name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-[#F8F4E5] focus:border-[#F8F4E5] bg-white/90 transition-all duration-300 text-sm shadow-sm hover:shadow-md"
+                    required
+                    autoComplete="name"
+                  />
                 </div>
-                <div className="text-3xl md:text-4xl font-bold text-[#F8F4E5] mb-2">200+</div>
-                <div className="text-sm md:text-base text-gray-300">Destinations</div>
-              </div>
-              <div className="text-center group">
-                <div className="w-16 h-16 bg-[#F8F4E5]/20 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:bg-[#F8F4E5]/30 transition-colors duration-300">
-                  <span className="text-2xl">⭐</span>
+                
+                <div className="relative">
+                  <span className="absolute left-3 top-3 text-gray-400 text-sm">📧</span>
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Your Email Address"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-[#F8F4E5] focus:border-[#F8F4E5] bg-white/90 transition-all duration-300 text-sm shadow-sm hover:shadow-md"
+                    required
+                    autoComplete="email"
+                  />
                 </div>
-                <div className="text-3xl md:text-4xl font-bold text-[#F8F4E5] mb-2">15+</div>
-                <div className="text-sm md:text-base text-gray-300">Years Experience</div>
-              </div>
-              <div className="text-center group">
-                <div className="w-16 h-16 bg-[#F8F4E5]/20 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:bg-[#F8F4E5]/30 transition-colors duration-300">
-                  <span className="text-2xl">🕒</span>
+                
+                <div className="relative">
+                  <span className="absolute left-3 top-3 text-gray-400 text-sm">📱</span>
+                  <input
+                    type="tel"
+                    name="phone"
+                    placeholder="Your Phone Number"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-[#F8F4E5] focus:border-[#F8F4E5] bg-white/90 transition-all duration-300 text-sm shadow-sm hover:shadow-md"
+                    required
+                    autoComplete="tel"
+                  />
                 </div>
-                <div className="text-3xl md:text-4xl font-bold text-[#F8F4E5] mb-2">24/7</div>
-                <div className="text-sm md:text-base text-gray-300">Support</div>
+                
+                <div className="relative">
+                  <span className="absolute left-3 top-3 text-gray-400 text-sm">🛫</span>
+                  <select
+                    name="service"
+                    value={formData.service}
+                    onChange={handleInputChange}
+                    className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-[#F8F4E5] focus:border-[#F8F4E5] bg-white/90 transition-all duration-300 text-sm shadow-sm hover:shadow-md appearance-none"
+                    required
+                  >
+                    <option value="">Choose Your Service</option>
+                    <option value="hajj">🕌 Hajj Package</option>
+                    <option value="umrah">🌙 Umrah Package</option>
+                    <option value="flight">✈️ Flight Booking</option>
+                    <option value="train">🚆 Train Booking</option>
+                    <option value="bus">🚌 Bus Booking</option>
+                    <option value="hotel">🏨 Hotel Booking</option>
+                    <option value="cruise">🚢 Cruise Booking</option>
+                  </select>
+                </div>
+                
+                <div className="relative">
+                  <span className="absolute left-3 top-3 text-gray-400 text-sm">💬</span>
+                  <textarea
+                    name="message"
+                    placeholder="Tell us about your travel plans..."
+                    rows="3"
+                    value={formData.message}
+                    onChange={handleInputChange}
+                    className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-[#F8F4E5] focus:border-[#F8F4E5] bg-white/90 transition-all duration-300 text-sm shadow-sm hover:shadow-md resize-none"
+                  ></textarea>
+                </div>
+                
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full bg-gradient-to-r from-[#F8F4E5] to-[#F6FEFE] hover:from-[#F6FEFE] hover:to-[#F8F4E5] disabled:opacity-50 disabled:cursor-not-allowed text-[#063955] py-4 rounded-xl font-bold flex items-center justify-center space-x-2 transition-all duration-300 transform hover:scale-105 disabled:transform-none text-base shadow-lg hover:shadow-xl"
+                >
+                  {isLoading ? (
+                    <>
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-[#063955]"></div>
+                      <span>Sending...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>🚀</span>
+                      <span>Get Quote Now</span>
+                    </>
+                  )}
+                </button>
+              </form>
+              
+              <div className="mt-4 pt-4 border-t border-gray-200">
+                <p className="text-xs text-gray-500 text-center mb-3">Or contact us directly:</p>
+                <div className="flex space-x-2">
+                  <a 
+                    href="https://wa.me/917383644844?text=Hi! I'm interested in your travel packages. Can you help me plan my trip?"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-3 py-3 rounded-xl flex items-center justify-center space-x-2 transition-all duration-300 transform hover:scale-105 text-sm font-semibold shadow-lg"
+                  >
+                    <span>💬</span>
+                    <span>WhatsApp</span>
+                  </a>
+                  <a 
+                    href="mailto:signaturewtt@gmail.com?subject=Travel Inquiry&body=Hi! I would like to inquire about your travel packages."
+                    className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-3 py-3 rounded-xl flex items-center justify-center space-x-2 transition-all duration-300 transform hover:scale-105 text-sm font-semibold shadow-lg"
+                  >
+                    <span>📧</span>
+                    <span>Email</span>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Services Section */}
-      <section id="services" className="pt-20 pb-12 bg-gradient-to-b from-[#F8F4E5] to-white">
+
+
+         {/* Services Section */}
+      <section id="services" className="pt-8 pb-8 bg-gradient-to-b from-[#F8F4E5] to-white">
         <div className="container mx-auto px-4">
-          <div className={`text-center mb-16 transition-all duration-1000 ${isVisible.services ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <div className="flex items-center justify-center mb-6">
-              <div className="w-16 h-0.5 bg-[#F8F4E5] mr-4"></div>
-              <img src="/logo.png" alt="Signature world tour and travels" className="h-12 w-auto opacity-80" />
-              <div className="w-16 h-0.5 bg-[#F8F4E5] ml-4"></div>
+          <div className={`text-center mb-8 transition-all duration-1000 ${isVisible.services ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            <div className="flex items-center justify-center mb-4">
+              <div className="w-12 h-0.5 bg-[#F8F4E5] mr-3"></div>
+              <img src="/logo.png" alt="Signature world tour and travels" className="h-10 w-auto opacity-80" />
+              <div className="w-12 h-0.5 bg-[#F8F4E5] ml-3"></div>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-[#063955] mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-[#063955] mb-3">
               Our Booking Services
             </h2>
-            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+            <p className="text-gray-600 text-base max-w-2xl mx-auto">
               Choose from our wide range of travel booking options
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {services.map((service, index) => (
               <div 
                 key={index}
-                className={`group relative overflow-hidden rounded-2xl bg-white border border-[#F8F4E5]/20 shadow-lg hover:shadow-2xl hover:border-[#F8F4E5]/40 transition-all duration-500 transform hover:-translate-y-2 ${isVisible.services ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+                className={`group relative overflow-hidden rounded-xl bg-white border border-[#F8F4E5]/20 shadow-lg hover:shadow-xl hover:border-[#F8F4E5]/40 transition-all duration-500 transform hover:-translate-y-1 ${isVisible.services ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
-                <div className="relative h-48 overflow-hidden">
+                <div className="relative h-40 overflow-hidden">
                   <img 
                     src={service.image} 
                     alt={service.title}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-signature-navy/70 via-signature-navy/20 to-transparent"></div>
-                  <div className="absolute top-4 right-4 w-10 h-10 bg-[#F8F4E5] rounded-full flex items-center justify-center">
-                    <span className="text-[#063955] font-bold text-sm">★</span>
+                  <div className="absolute top-3 right-3 w-8 h-8 bg-[#F2F2F2] rounded-full flex items-center justify-center">
+                    <span className="text-[#063955] font-bold text-xs">★</span>
                   </div>
                 </div>
                 
-                <div className="p-6 bg-gradient-to-b from-white to-[#F8F4E5]/30">
-                  <h3 className="text-2xl font-bold text-[#063955] mb-3 group-hover:text-[#F8F4E5] transition-colors duration-300">{service.title}</h3>
-                  <p className="text-[#063955]/70 mb-4 leading-relaxed">{service.description}</p>
+                <div className="p-4 bg-gradient-to-b from-white to-[#F8F4E5]/30">
+                  <h3 className="text-lg font-bold text-[#063955] mb-2 group-hover:text-[#F8F4E5] transition-colors duration-300">{service.title}</h3>
+                  <p className="text-[#063955]/70 mb-4 leading-relaxed text-sm">{service.description}</p>
                   
                   {/* WhatsApp and Email buttons for service cards */}
-                  <div className="flex space-x-2 mb-4">
+                  <div className="flex space-x-2 mb-3">
                     <a 
                       href={`https://wa.me/917383644844?text=Hi, I'm interested in ${service.title}. Can you provide more details?`}
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="flex-1 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2"
+                      className="flex-1 bg-green-500 hover:bg-green-600 text-white px-2 py-1.5 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-1"
                     >
-                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
                       </svg>
-                      <span>WhatsApp</span>
+                      <span className="text-xs">WhatsApp</span>
                     </a>
                     <a 
                       href={`mailto:signaturewtt@gmail.com?subject=${service.title} Inquiry&body=Hi, I'm interested in ${service.title}. Please provide more information about pricing and availability.`}
-                      className="flex-1 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2"
+                      className="flex-1 bg-blue-500 hover:bg-blue-600 text-white px-2 py-1.5 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-1"
                     >
-                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
                       </svg>
-                      <span>Email</span>
+                      <span className="text-xs">Email</span>
                     </a>
                   </div>
                   
-                  <button className="w-full bg-gradient-to-r from-[#F8F4E5] to-[#F6FEFE] hover:from-[#F6FEFE] hover:to-[#F8F4E5] text-[#063955] px-6 py-3 rounded-full font-bold transition-all duration-300 transform group-hover:scale-105 shadow-md">
+                  <button className="w-full bg-gradient-to-r from-[#F8F4E5] to-[#F6FEFE] hover:from-[#F6FEFE] hover:to-[#F8F4E5] text-[#063955] px-4 py-2.5 rounded-lg font-bold transition-all duration-300 transform group-hover:scale-105 shadow-md text-sm">
                     BOOK NOW
                   </button>
                 </div>
@@ -1368,91 +1608,92 @@ function Home() {
             ))}
           </div>
         </div>
-      </section>
+      </section>     
+
 
       {/* Hajj & Umrah Section */}
-      <section id="hajj-umrah" className="pt-4 pb-12 bg-gradient-to-b from-white to-[#F8F4E5]/50">
+      <section id="hajj-umrah" className="pt-2 pb-8 bg-gradient-to-b from-white to-[#F8F4E5]/50">
         <div className="container mx-auto px-4">
-          <div className={`text-center mb-16 transition-all duration-1000 ${isVisible.hajj ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <div className="flex items-center justify-center mb-6">
-              <div className="w-16 h-0.5 bg-[#F8F4E5] mr-4"></div>
-              <img src="/logo.png" alt="Signature world tour and travels" className="h-12 w-auto opacity-80" />
-              <div className="w-16 h-0.5 bg-[#F8F4E5] ml-4"></div>
+          <div className={`text-center mb-8 transition-all duration-1000 ${isVisible.hajj ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            <div className="flex items-center justify-center mb-4">
+              <div className="w-12 h-0.5 bg-[#F8F4E5] mr-3"></div>
+              <img src="/logo.png" alt="Signature world tour and travels" className="h-10 w-auto opacity-80" />
+              <div className="w-12 h-0.5 bg-[#F8F4E5] ml-3"></div>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-[#063955] mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-[#063955] mb-3">
               Hajj & Umrah Services
             </h2>
-            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+            <p className="text-gray-600 text-base max-w-2xl mx-auto">
               Embark on your spiritual journey with our premium Hajj and Umrah packages
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {hajjUmrahServices.map((service, index) => (
               <div 
                 key={index}
-                className={`group relative overflow-hidden rounded-2xl bg-white border border-[#F8F4E5]/20 shadow-lg hover:shadow-2xl hover:border-[#F8F4E5]/40 transition-all duration-500 transform hover:-translate-y-2 ${isVisible['hajj-umrah'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+                className={`group relative overflow-hidden rounded-xl bg-white border border-[#F8F4E5]/20 shadow-lg hover:shadow-xl hover:border-[#F8F4E5]/40 transition-all duration-500 transform hover:-translate-y-1 ${isVisible['hajj-umrah'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
-                <div className="relative h-48 overflow-hidden">
+                <div className="relative h-40 overflow-hidden">
                   <img 
                     src={service.image} 
                     alt={service.title}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-signature-navy/70 via-signature-navy/20 to-transparent"></div>
-                  <div className="absolute top-4 right-4 w-10 h-10 bg-[#F8F4E5] rounded-full flex items-center justify-center">
-                    <span className="text-[#063955] font-bold text-sm">🕌</span>
+                  <div className="absolute top-3 right-3 w-8 h-8 bg-[#F2F2F2] rounded-full flex items-center justify-center">
+                    <span className="text-[#063955] font-bold text-xs">🕌</span>
                   </div>
-                  <div className="absolute bottom-4 left-4 text-white">
-                    <div className="text-lg font-bold">{service.price}</div>
+                  <div className="absolute bottom-3 left-3 text-white">
+                    <div className="text-base font-bold">{service.price}</div>
                   </div>
                 </div>
                 
-                <div className="p-6 bg-gradient-to-b from-white to-[#F8F4E5]/30">
-                  <h3 className="text-2xl font-bold text-[#063955] mb-3 group-hover:text-[#F8F4E5] transition-colors duration-300">{service.title}</h3>
-                  <p className="text-[#063955]/70 mb-6 leading-relaxed">{service.description}</p>
+                <div className="p-4 bg-gradient-to-b from-white to-[#F8F4E5]/30">
+                  <h3 className="text-lg font-bold text-[#063955] mb-2 group-hover:text-[#F8F4E5] transition-colors duration-300">{service.title}</h3>
+                  <p className="text-[#063955]/70 mb-4 leading-relaxed text-sm">{service.description}</p>
                   
-                  <div className="space-y-2 mb-4">
-                    <div className="flex items-center space-x-2 text-sm text-[#063955]/60">
-                      <div className="w-1.5 h-1.5 bg-[#F8F4E5] rounded-full"></div>
+                  <div className="space-y-1 mb-3">
+                    <div className="flex items-center space-x-2 text-xs text-[#063955]/60">
+                      <div className="w-1 h-1 bg-[#F8F4E5] rounded-full"></div>
                       <span>Visa Processing Included</span>
                     </div>
-                    <div className="flex items-center space-x-2 text-sm text-[#063955]/60">
-                      <div className="w-1.5 h-1.5 bg-[#F8F4E5] rounded-full"></div>
+                    <div className="flex items-center space-x-2 text-xs text-[#063955]/60">
+                      <div className="w-1 h-1 bg-[#F8F4E5] rounded-full"></div>
                       <span>24/7 Local Support</span>
                     </div>
-                    <div className="flex items-center space-x-2 text-sm text-[#063955]/60">
-                      <div className="w-1.5 h-1.5 bg-[#F8F4E5] rounded-full"></div>
+                    <div className="flex items-center space-x-2 text-xs text-[#063955]/60">
+                      <div className="w-1 h-1 bg-[#F8F4E5] rounded-full"></div>
                       <span>Religious Guide Included</span>
                     </div>
                   </div>
                   
                   {/* WhatsApp and Email buttons for Hajj & Umrah cards */}
-                  <div className="flex space-x-2 mb-4">
+                  <div className="flex space-x-2 mb-3">
                     <a 
                       href={`https://wa.me/917383644844?text=Hi, I'm interested in your ${service.title} package. Can you provide more details about pricing and itinerary?`}
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="flex-1 bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-1"
+                      className="flex-1 bg-green-500 hover:bg-green-600 text-white px-2 py-1.5 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-1"
                     >
-                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
                       </svg>
                       <span className="text-xs">WhatsApp</span>
                     </a>
                     <a 
                       href={`mailto:signaturewtt@gmail.com?subject=${service.title} Package Inquiry&body=Hi, I'm interested in your ${service.title} package (${service.price}). Please provide detailed information about the itinerary, accommodation, and booking process.`}
-                      className="flex-1 bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-1"
+                      className="flex-1 bg-blue-500 hover:bg-blue-600 text-white px-2 py-1.5 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-1"
                     >
-                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
                       </svg>
                       <span className="text-xs">Email</span>
                     </a>
                   </div>
                   
-                  <button className={`w-full ${service.buttonColor} text-white px-6 py-3 rounded-full font-bold transition-all duration-300 transform group-hover:scale-105 shadow-md`}>
+                  <button className="w-full bg-gradient-to-r from-[#063955] to-[#2B4B5C] hover:from-[#2B4B5C] hover:to-[#063955] text-white px-4 py-2.5 rounded-lg font-bold transition-all duration-300 transform group-hover:scale-105 shadow-lg hover:shadow-xl text-sm">
                     VIEW PACKAGE
                   </button>
                 </div>
@@ -1462,161 +1703,8 @@ function Home() {
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section id="contact" className="py-20 bg-gradient-to-br from-signature-navy via-signature-blue to-signature-navy relative overflow-hidden">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-10 left-10 w-32 h-32 border-2 border-[#F8F4E5] rounded-full"></div>
-          <div className="absolute top-32 right-20 w-16 h-16 border border-[#F6FEFE] rounded-full"></div>
-          <div className="absolute bottom-20 left-1/4 w-24 h-24 border-2 border-[#F8F4E5] rounded-full"></div>
-        </div>
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className={`text-white transition-all duration-1000 ${isVisible.contact ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`}>
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                Plan Your Perfect Trip
-              </h2>
-              <p className="text-xl mb-8 text-white/90">
-                Let us help you create unforgettable memories. Fill out the form and our travel experts will get back to you with personalized recommendations.
-              </p>
+    
 
-              <div className="space-y-6 mb-8">
-                <div className="flex items-center space-x-4 group hover:bg-white/10 p-3 rounded-lg transition-colors duration-300">
-                  <div className="w-14 h-14 bg-gradient-to-r from-[#F8F4E5] to-[#F6FEFE] rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                    <span className="text-[#063955] text-xl font-bold">📞</span>
-                  </div>
-                  <div>
-                    <div className="text-[#F8F4E5] font-semibold text-sm">Call Us</div>
-                    <span className="text-lg">+91 7383644844</span>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-4 group hover:bg-white/10 p-3 rounded-lg transition-colors duration-300">
-                  <div className="w-14 h-14 bg-gradient-to-r from-[#F8F4E5] to-[#F6FEFE] rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                    <span className="text-[#063955] text-xl font-bold">📧</span>
-                  </div>
-                  <div>
-                    <div className="text-[#F8F4E5] font-semibold text-sm">Email Us</div>
-                    <span className="text-lg">signaturewtt@gmail.com</span>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-4 group hover:bg-white/10 p-3 rounded-lg transition-colors duration-300">
-                  <div className="w-14 h-14 bg-gradient-to-r from-[#F8F4E5] to-[#F6FEFE] rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                    <span className="text-[#063955] text-xl font-bold">📍</span>
-                  </div>
-                  <div>
-                    <div className="text-[#F8F4E5] font-semibold text-sm">Visit Us</div>
-                    <span className="text-lg">3rd Floor Aazan complex Opp.Abu bhai kapadwala, Juhapura, Ahmedabad Gujarat 380051</span>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-4 group hover:bg-white/10 p-3 rounded-lg transition-colors duration-300">
-                  <div className="w-14 h-14 bg-gradient-to-r from-[#F8F4E5] to-[#F6FEFE] rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                    <span className="text-[#063955] text-xl font-bold">🏢</span>
-                  </div>
-                  <div>
-                    <div className="text-[#F8F4E5] font-semibold text-sm">Registered Office</div>
-                    <span className="text-base">26 Noor-e-Mohmadi society Dholka, Ahmedabad Gujarat 382225</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-4">
-                <a 
-                  href="https://wa.me/917383644844?text=Hi! I'm interested in your travel packages. Can you help me plan my trip?"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-6 py-3 rounded-full flex items-center justify-center space-x-2 transition-all duration-300 transform hover:scale-105 shadow-lg"
-                >
-                  <span>💬</span>
-                  <span className="font-semibold">WhatsApp Us</span>
-                </a>
-                <a 
-                  href="mailto:signaturewtt@gmail.com?subject=Travel Inquiry&body=Hi! I would like to inquire about your travel packages. Please contact me."
-                  className="bg-gradient-to-r from-[#F8F4E5] to-[#F6FEFE] hover:from-[#F6FEFE] hover:to-[#F8F4E5] text-[#063955] px-6 py-3 rounded-full flex items-center justify-center space-x-2 transition-all duration-300 transform hover:scale-105 shadow-lg"
-                >
-                  <span>📧</span>
-                  <span className="font-semibold">Email Us</span>
-                </a>
-              </div>
-            </div>
-
-            <div className={`bg-gradient-to-br from-white to-[#F8F4E5]/50 rounded-2xl p-8 shadow-2xl border border-[#F8F4E5]/20 transition-all duration-1000 ${isVisible.contact ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}`}>
-              <div className="text-center mb-6">
-                <img src="/logo.png" alt="Signature world tour and travels" className="h-10 w-auto mx-auto mb-4 opacity-60" />
-                <h3 className="text-2xl font-bold text-[#063955]">Send us an Enquiry</h3>
-                <div className="w-16 h-0.5 bg-[#F8F4E5] mx-auto mt-2"></div>
-              </div>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Your Name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-3 border-2 border-signature-navy/20 rounded-lg focus:ring-2 focus:ring-[#063955] focus:border-[#F8F4E5] bg-white/80 transition-all duration-300"
-                  required
-                />
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Your Email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-3 border-2 border-signature-navy/20 rounded-lg focus:ring-2 focus:ring-[#063955] focus:border-[#F8F4E5] bg-white/80 transition-all duration-300"
-                  required
-                />
-                <input
-                  type="tel"
-                  name="phone"
-                  placeholder="Your Phone"
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-3 border-2 border-signature-navy/20 rounded-lg focus:ring-2 focus:ring-[#063955] focus:border-[#F8F4E5] bg-white/80 transition-all duration-300"
-                  required
-                />
-                <select
-                  name="service"
-                  value={formData.service}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-3 border-2 border-signature-navy/20 rounded-lg focus:ring-2 focus:ring-[#063955] focus:border-[#F8F4E5] bg-white/80 transition-all duration-300"
-                  required
-                >
-                  <option value="">Select Service</option>
-                  <option value="flight">Flight Booking</option>
-                  <option value="train">Train Booking</option>
-                  <option value="bus">Bus Booking</option>
-                  <option value="hotel">Hotel Booking</option>
-                  <option value="cruise">Cruise Booking</option>
-                </select>
-                <textarea
-                  name="message"
-                  placeholder="Your Message"
-                  rows="4"
-                  value={formData.message}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-3 border-2 border-signature-navy/20 rounded-lg focus:ring-2 focus:ring-[#063955] focus:border-[#F8F4E5] bg-white/80 transition-all duration-300"
-                ></textarea>
-                <button
-                  type="submit"
-                  disabled={isLoading}
-                  className="w-full bg-[#F8F4E5] hover:bg-[#F6FEFE] disabled:opacity-50 disabled:cursor-not-allowed text-[#063955] py-3 rounded-lg font-bold flex items-center justify-center space-x-2 transition-all duration-300 transform hover:scale-105 disabled:transform-none"
-                >
-                  {isLoading ? (
-                    <>
-                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-signature-navy"></div>
-                      <span>Sending...</span>
-                    </>
-                  ) : (
-                    <>
-                      <span>📤</span>
-                      <span>Send Enquiry</span>
-                    </>
-                  )}
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Certificates Carousel Section */}
       <section className="py-16 bg-gradient-to-r from-signature-navy via-signature-blue to-signature-navy">
