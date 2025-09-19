@@ -1,3 +1,19 @@
 {
-	"siteId": "457573f3-52c9-4316-8f04-7702ac0bb52c"
+	"siteId": "457573f3-52c9-4316-8f04-7702ac0bb52c",
+	"geolocation": {
+		"data": {
+			"country": {
+				"code": "IN",
+				"name": "India"
+			},
+			"subdivision": {
+				"code": "GJ",
+				"name": "Gujarat"
+			},
+			"timezone": "Asia/Kolkata",
+			"latitude": 23.0276,
+			"longitude": 72.5871
+		},
+		"timestamp": 1756658174619
+	}
 }

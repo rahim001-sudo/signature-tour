@@ -10,7 +10,7 @@ function AboutUs() {
     <div className="min-h-screen brand-pattern pt-20">
       <div className="max-w-6xl mx-auto px-4 py-16">
         <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold text-[#063955] mb-6">About Signature Tours and Travels</h1>
+          <h1 className="text-5xl font-bold text-[#063955] mb-6">About Signature world tour and travels</h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Your trusted partner for unforgettable travel experiences since 2010
           </p>
@@ -20,7 +20,7 @@ function AboutUs() {
           <div>
             <h2 className="text-3xl font-bold text-[#063955] mb-6">Our Story</h2>
             <p className="text-gray-600 mb-4">
-              Signature Tours and Travels was founded with a vision to make travel accessible, comfortable, and memorable for everyone. With over a decade of experience in the travel industry, we have helped thousands of travelers explore the world with confidence.
+              Signature world tour and travels was founded with a vision to make travel accessible, comfortable, and memorable for everyone. With over a decade of experience in the travel industry, we have helped thousands of travelers explore the world with confidence.
             </p>
             <p className="text-gray-600 mb-4">
               We specialize in providing comprehensive travel solutions including flight bookings, hotel reservations, tour packages, and specialized religious pilgrimage services like Hajj and Umrah.
@@ -185,7 +185,7 @@ function AdminLogin() {
       <div className="max-w-md w-full mx-4">
         <div className="bg-white rounded-lg shadow-xl p-8">
           <div className="text-center mb-8">
-            <img src="/logo.png" alt="Signature Tours" className="h-16 w-auto mx-auto mb-4" />
+            <img src="/logo.png" alt="Signature world tour and travels" className="h-16 w-auto mx-auto mb-4" />
             <h1 className="text-2xl font-bold text-[#063955]">Admin Login</h1>
             <p className="text-gray-600 mt-2">Access the admin dashboard</p>
           </div>
@@ -912,9 +912,10 @@ function PrivacyPolicy() {
               If you have any questions about this Privacy Policy, please contact us at:
             </p>
             <div className="text-gray-600 mt-4">
-              <p>Email: privacy@signaturetours.com</p>
-              <p>Phone: +91 98765 43210</p>
-              <p>Address: 123 Travel Street, Mumbai, India</p>
+              <p>Email: signaturewtt@gmail.com</p>
+              <p>Phone: +91 7383644844</p>
+              <p>Address: 3rd Floor Aazan complex Opp.Abu bhai kapadwala, Juhapura, Ahmedabad Gujarat 380051</p>
+              <p>Registered Office: 26 Noor-e-Mohmadi society Dholka, Ahmedabad Gujarat 382225</p>
             </div>
           </section>
         </div>
@@ -947,33 +948,43 @@ function Home() {
   const certificates = [
     {
       id: 1,
-      title: "IATA Travel Agent Certificate",
-      image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      description: "International Air Transport Association certification"
+      image: "https://lh3.googleusercontent.com/d/12Vzw5pl32xUI6X79lt7n1BLnukOuOdUD"
     },
     {
       id: 2,
-      title: "Tourism Board License",
-      image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      description: "Official tourism operator license"
+      image: "https://lh3.googleusercontent.com/d/1D9hgLCJtQdKa04zYZ_--SqtaxyOlFwyI"
     },
     {
       id: 3,
-      title: "ISO 9001 Quality Certificate",
-      image: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      description: "Quality management system certification"
+      image: "https://lh3.googleusercontent.com/d/1I1GKmHWnFpduhiBky6Byw1h6DF-a7ahu"
     },
     {
       id: 4,
-      title: "ASTA Member Certificate",
-      image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      description: "American Society of Travel Advisors membership"
+      image: "https://lh3.googleusercontent.com/d/1Imu1JpDl-IRM01rHZ9v0KUReeX-ssBei"
     },
     {
       id: 5,
-      title: "Hajj & Umrah Service License",
-      image: "https://images.unsplash.com/photo-1481487196290-c152efe083f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      description: "Authorized Hajj and Umrah service provider"
+      image: "https://lh3.googleusercontent.com/d/1TSf6NijtQSrPVIyUOp0q_ufgioJGWhpn"
+    },
+    {
+      id: 6,
+      image: "https://lh3.googleusercontent.com/d/1bf2FNWsgYU2mBG65mww-Z7vbbRrMqm7V"
+    },
+    {
+      id: 7,
+      image: "https://lh3.googleusercontent.com/d/1fB9RWqA3SZvPsoySzrJ_yDyJxC2B7ga-"
+    },
+    {
+      id: 8,
+      image: "https://lh3.googleusercontent.com/d/1qoqmIcrjryFJ6nKlhJW9XxaHZ_wHB6uP"
+    },
+    {
+      id: 9,
+      image: "https://lh3.googleusercontent.com/d/1w6xVbQawB-vANIbI5uK57m4XXHkDDtrS"
+    },
+    {
+      id: 10,
+      image: "https://lh3.googleusercontent.com/d/1yI3RfU0GR9_AQi2xiIredgWWPMmX8sw6"
     }
   ];
 
@@ -1108,12 +1119,6 @@ function Home() {
       buttonColor: 'bg-[#F6FEFE] hover:bg-[#F8F4E5]'
     },
     {
-      image: 'https://images.unsplash.com/photo-1549317336-206569e8475c?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
-      title: 'Car Rental',
-      description: 'Rent a car for your perfect road trip',
-      buttonColor: 'bg-[#2B4B5C] hover:bg-[#063955]'
-    },
-    {
       image: 'https://images.unsplash.com/photo-1520637836862-4d197d17c90a?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
       title: 'Cruise Booking',
       description: 'Luxurious cruise experiences on the high seas',
@@ -1130,12 +1135,12 @@ function Home() {
             <div className="flex items-center space-x-3">
               <img 
                 src="/logo.png" 
-                alt="Signature Tours and Travels" 
+                alt="Signature world tour and travels" 
                 className="h-16 w-auto"
               />
               <div className="hidden lg:block">
-                <h1 className="text-2xl font-bold text-white">Signature Tours</h1>
-                <p className="text-sm text-[#F8F4E5]">and Travels</p>
+                <h1 className="text-2xl font-bold text-white">Signature world tour</h1>
+                <p className="text-sm text-[#F8F4E5]">and travels</p>
               </div>
             </div>
 
@@ -1151,7 +1156,7 @@ function Home() {
               {/* WhatsApp and Email in Header */}
               <div className="flex space-x-2 ml-4 pl-4 border-l border-signature-blue">
                 <a 
-                  href="https://wa.me/919876543210?text=Hello, I'm interested in your travel services" 
+                  href="https://wa.me/917383644844?text=Hello, I'm interested in your travel services" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="bg-green-500 hover:bg-green-600 text-white p-2 rounded-full transition-all duration-300 transform hover:scale-110"
@@ -1162,12 +1167,12 @@ function Home() {
                   </svg>
                 </a>
                 <a 
-                  href="mailto:info@signaturetours.com?subject=Travel Inquiry&body=Hello, I'm interested in your travel services."
+                  href="mailto:signaturewtt@gmail.com?subject=Travel Inquiry&body=Hello, I'm interested in your travel services."
                   className="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-full transition-all duration-300 transform hover:scale-110"
                   title="Email"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
                   </svg>
                 </a>
               </div>
@@ -1195,7 +1200,7 @@ function Home() {
                 {/* WhatsApp and Email in Mobile Menu */}
                 <div className="flex space-x-4 pt-4 border-t border-signature-blue mt-4">
                   <a 
-                    href="https://wa.me/919876543210?text=Hello, I'm interested in your travel services" 
+                    href="https://wa.me/917383644844?text=Hello, I'm interested in your travel services" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full transition-all duration-300 flex items-center space-x-2"
@@ -1207,12 +1212,12 @@ function Home() {
                     <span>WhatsApp</span>
                   </a>
                   <a 
-                    href="mailto:info@signaturetours.com?subject=Travel Inquiry&body=Hello, I'm interested in your travel services."
+                    href="mailto:signaturewtt@gmail.com?subject=Travel Inquiry&body=Hello, I'm interested in your travel services."
                     className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full transition-all duration-300 flex items-center space-x-2"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                      <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
                     </svg>
                     <span>Email</span>
                   </a>
@@ -1237,7 +1242,7 @@ function Home() {
             <div className="mb-6 flex justify-center">
               <img 
                 src="/logo.png" 
-                alt="Signature Tours and Travels" 
+                alt="Signature world tour and travels" 
                 className="h-20 w-auto opacity-90 animate-pulse-slow"
               />
             </div>
@@ -1297,7 +1302,7 @@ function Home() {
           <div className={`text-center mb-16 transition-all duration-1000 ${isVisible.services ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <div className="flex items-center justify-center mb-6">
               <div className="w-16 h-0.5 bg-[#F8F4E5] mr-4"></div>
-              <img src="/logo.png" alt="Signature Tours" className="h-12 w-auto opacity-80" />
+              <img src="/logo.png" alt="Signature world tour and travels" className="h-12 w-auto opacity-80" />
               <div className="w-16 h-0.5 bg-[#F8F4E5] ml-4"></div>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold text-[#063955] mb-4">
@@ -1334,7 +1339,7 @@ function Home() {
                   {/* WhatsApp and Email buttons for service cards */}
                   <div className="flex space-x-2 mb-4">
                     <a 
-                      href={`https://wa.me/919876543210?text=Hi, I'm interested in ${service.title}. Can you provide more details?`}
+                      href={`https://wa.me/917383644844?text=Hi, I'm interested in ${service.title}. Can you provide more details?`}
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="flex-1 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2"
@@ -1345,7 +1350,7 @@ function Home() {
                       <span>WhatsApp</span>
                     </a>
                     <a 
-                      href={`mailto:info@signaturetours.com?subject=${service.title} Inquiry&body=Hi, I'm interested in ${service.title}. Please provide more information about pricing and availability.`}
+                      href={`mailto:signaturewtt@gmail.com?subject=${service.title} Inquiry&body=Hi, I'm interested in ${service.title}. Please provide more information about pricing and availability.`}
                       className="flex-1 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2"
                     >
                       <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -1366,12 +1371,12 @@ function Home() {
       </section>
 
       {/* Hajj & Umrah Section */}
-      <section id="hajj-umrah" className="py-12 bg-gradient-to-b from-white to-[#F8F4E5]/50">
+      <section id="hajj-umrah" className="pt-4 pb-12 bg-gradient-to-b from-white to-[#F8F4E5]/50">
         <div className="container mx-auto px-4">
           <div className={`text-center mb-16 transition-all duration-1000 ${isVisible.hajj ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <div className="flex items-center justify-center mb-6">
               <div className="w-16 h-0.5 bg-[#F8F4E5] mr-4"></div>
-              <img src="/logo.png" alt="Signature Tours" className="h-12 w-auto opacity-80" />
+              <img src="/logo.png" alt="Signature world tour and travels" className="h-12 w-auto opacity-80" />
               <div className="w-16 h-0.5 bg-[#F8F4E5] ml-4"></div>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold text-[#063955] mb-4">
@@ -1426,7 +1431,7 @@ function Home() {
                   {/* WhatsApp and Email buttons for Hajj & Umrah cards */}
                   <div className="flex space-x-2 mb-4">
                     <a 
-                      href={`https://wa.me/919876543210?text=Hi, I'm interested in your ${service.title} package. Can you provide more details about pricing and itinerary?`}
+                      href={`https://wa.me/917383644844?text=Hi, I'm interested in your ${service.title} package. Can you provide more details about pricing and itinerary?`}
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="flex-1 bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-1"
@@ -1437,7 +1442,7 @@ function Home() {
                       <span className="text-xs">WhatsApp</span>
                     </a>
                     <a 
-                      href={`mailto:info@signaturetours.com?subject=${service.title} Package Inquiry&body=Hi, I'm interested in your ${service.title} package (${service.price}). Please provide detailed information about the itinerary, accommodation, and booking process.`}
+                      href={`mailto:signaturewtt@gmail.com?subject=${service.title} Package Inquiry&body=Hi, I'm interested in your ${service.title} package (${service.price}). Please provide detailed information about the itinerary, accommodation, and booking process.`}
                       className="flex-1 bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-1"
                     >
                       <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -1482,7 +1487,7 @@ function Home() {
                   </div>
                   <div>
                     <div className="text-[#F8F4E5] font-semibold text-sm">Call Us</div>
-                    <span className="text-lg">+91 9876543210</span>
+                    <span className="text-lg">+91 7383644844</span>
                   </div>
                 </div>
                 <div className="flex items-center space-x-4 group hover:bg-white/10 p-3 rounded-lg transition-colors duration-300">
@@ -1491,7 +1496,7 @@ function Home() {
                   </div>
                   <div>
                     <div className="text-[#F8F4E5] font-semibold text-sm">Email Us</div>
-                    <span className="text-lg">info@signaturetourntravels.com</span>
+                    <span className="text-lg">signaturewtt@gmail.com</span>
                   </div>
                 </div>
                 <div className="flex items-center space-x-4 group hover:bg-white/10 p-3 rounded-lg transition-colors duration-300">
@@ -1500,14 +1505,23 @@ function Home() {
                   </div>
                   <div>
                     <div className="text-[#F8F4E5] font-semibold text-sm">Visit Us</div>
-                    <span className="text-lg">123 Travel Street, Mumbai, India</span>
+                    <span className="text-lg">3rd Floor Aazan complex Opp.Abu bhai kapadwala, Juhapura, Ahmedabad Gujarat 380051</span>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-4 group hover:bg-white/10 p-3 rounded-lg transition-colors duration-300">
+                  <div className="w-14 h-14 bg-gradient-to-r from-[#F8F4E5] to-[#F6FEFE] rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                    <span className="text-[#063955] text-xl font-bold">🏢</span>
+                  </div>
+                  <div>
+                    <div className="text-[#F8F4E5] font-semibold text-sm">Registered Office</div>
+                    <span className="text-base">26 Noor-e-Mohmadi society Dholka, Ahmedabad Gujarat 382225</span>
                   </div>
                 </div>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
                 <a 
-                  href="https://wa.me/919876543210?text=Hi! I'm interested in your travel packages. Can you help me plan my trip?"
+                  href="https://wa.me/917383644844?text=Hi! I'm interested in your travel packages. Can you help me plan my trip?"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-6 py-3 rounded-full flex items-center justify-center space-x-2 transition-all duration-300 transform hover:scale-105 shadow-lg"
@@ -1516,7 +1530,7 @@ function Home() {
                   <span className="font-semibold">WhatsApp Us</span>
                 </a>
                 <a 
-                  href="mailto:info@signaturetourntravels.com?subject=Travel Inquiry&body=Hi! I would like to inquire about your travel packages. Please contact me."
+                  href="mailto:signaturewtt@gmail.com?subject=Travel Inquiry&body=Hi! I would like to inquire about your travel packages. Please contact me."
                   className="bg-gradient-to-r from-[#F8F4E5] to-[#F6FEFE] hover:from-[#F6FEFE] hover:to-[#F8F4E5] text-[#063955] px-6 py-3 rounded-full flex items-center justify-center space-x-2 transition-all duration-300 transform hover:scale-105 shadow-lg"
                 >
                   <span>📧</span>
@@ -1527,7 +1541,7 @@ function Home() {
 
             <div className={`bg-gradient-to-br from-white to-[#F8F4E5]/50 rounded-2xl p-8 shadow-2xl border border-[#F8F4E5]/20 transition-all duration-1000 ${isVisible.contact ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}`}>
               <div className="text-center mb-6">
-                <img src="/logo.png" alt="Signature Tours" className="h-10 w-auto mx-auto mb-4 opacity-60" />
+                <img src="/logo.png" alt="Signature world tour and travels" className="h-10 w-auto mx-auto mb-4 opacity-60" />
                 <h3 className="text-2xl font-bold text-[#063955]">Send us an Enquiry</h3>
                 <div className="w-16 h-0.5 bg-[#F8F4E5] mx-auto mt-2"></div>
               </div>
@@ -1571,7 +1585,6 @@ function Home() {
                   <option value="train">Train Booking</option>
                   <option value="bus">Bus Booking</option>
                   <option value="hotel">Hotel Booking</option>
-                  <option value="car">Car Rental</option>
                   <option value="cruise">Cruise Booking</option>
                 </select>
                 <textarea
@@ -1609,7 +1622,7 @@ function Home() {
       <section className="py-16 bg-gradient-to-r from-signature-navy via-signature-blue to-signature-navy">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <img src="/logo.png" alt="Signature Tours" className="h-12 w-auto mx-auto mb-4 opacity-80" />
+            <img src="/logo.png" alt="Signature world tour and travels" className="h-12 w-auto mx-auto mb-4 opacity-80" />
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
               Our Certifications & Accreditations
             </h2>
@@ -1627,27 +1640,12 @@ function Home() {
               >
                 {certificates.map((cert, index) => (
                   <div key={cert.id} className="w-full flex-shrink-0">
-                    <div className="bg-white rounded-2xl p-8 mx-4 shadow-2xl">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                        <div>
-                          <img 
-                            src={cert.image} 
-                            alt={cert.title}
-                            className="w-full h-64 object-cover rounded-xl shadow-lg"
-                          />
-                        </div>
-                        <div className="text-center md:text-left">
-                          <div className="w-16 h-16 bg-gradient-to-r from-[#F8F4E5] to-[#F6FEFE] rounded-full flex items-center justify-center mx-auto md:mx-0 mb-4">
-                            <span className="text-[#063955] text-2xl font-bold">🏆</span>
-                          </div>
-                          <h3 className="text-2xl font-bold text-[#063955] mb-4">{cert.title}</h3>
-                          <p className="text-gray-600 text-lg mb-6">{cert.description}</p>
-                          <div className="flex items-center justify-center md:justify-start space-x-2">
-                            <div className="w-3 h-3 bg-[#F8F4E5] rounded-full"></div>
-                            <span className="text-[#063955] font-semibold">Verified & Accredited</span>
-                          </div>
-                        </div>
-                      </div>
+                    <div className="bg-white rounded-2xl p-4 mx-4 shadow-2xl">
+                      <img 
+                        src={cert.image} 
+                        alt={`Certificate ${cert.id}`}
+                        className="w-full h-80 object-contain rounded-xl"
+                      />
                     </div>
                   </div>
                 ))}
@@ -1699,7 +1697,7 @@ function Home() {
               <div className="flex items-center space-x-3">
                 <img 
                   src="/logo.png" 
-                  alt="Signature Tours and Travels" 
+                  alt="Signature world tour and travels" 
                   className="h-12 w-auto"
                 />
               </div>
@@ -1708,7 +1706,7 @@ function Home() {
               </p>
               <div className="flex space-x-4">
                 <a 
-                  href="https://wa.me/919876543210?text=Hello, I'm interested in your travel services"
+                  href="https://wa.me/917383644844?text=Hello, I'm interested in your travel services"
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="w-10 h-10 bg-green-500 hover:bg-green-600 rounded-full flex items-center justify-center transition-colors duration-300"
@@ -1719,7 +1717,7 @@ function Home() {
                   </svg>
                 </a>
                 <a 
-                  href="mailto:info@signaturetours.com?subject=Travel Inquiry&body=Hello, I'm interested in your travel services."
+                  href="mailto:signaturewtt@gmail.com?subject=Travel Inquiry&body=Hello, I'm interested in your travel services."
                   className="w-10 h-10 bg-blue-500 hover:bg-blue-600 rounded-full flex items-center justify-center transition-colors duration-300"
                   title="Email"
                 >
@@ -1727,7 +1725,7 @@ function Home() {
                     <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
                   </svg>
                 </a>
-                <a href="#" className="w-10 h-10 bg-[#2B4B5C] hover:bg-[#F8F4E5] rounded-full flex items-center justify-center transition-colors duration-300">📘</a>
+                <a href="mailto:signaturewtt@gmail.com?subject=Travel Inquiry&body=Hello, I'm interested in your travel services." className="w-10 h-10 bg-[#2B4B5C] hover:bg-[#F8F4E5] rounded-full flex items-center justify-center transition-colors duration-300">📧</a>
                 <a href="#" className="w-10 h-10 bg-[#2B4B5C] hover:bg-[#F8F4E5] rounded-full flex items-center justify-center transition-colors duration-300">📷</a>
               </div>
             </div>
@@ -1751,7 +1749,6 @@ function Home() {
                 <li><a href="#" className="text-gray-300 hover:text-[#F8F4E5] transition-colors duration-300">Train Booking</a></li>
                 <li><a href="#" className="text-gray-300 hover:text-[#F8F4E5] transition-colors duration-300">Bus Booking</a></li>
                 <li><a href="#" className="text-gray-300 hover:text-[#F8F4E5] transition-colors duration-300">Hotel Booking</a></li>
-                <li><a href="#" className="text-gray-300 hover:text-[#F8F4E5] transition-colors duration-300">Car Rental</a></li>
                 <li><a href="#" className="text-gray-300 hover:text-[#F8F4E5] transition-colors duration-300">Cruise Booking</a></li>
               </ul>
             </div>
@@ -1761,15 +1758,19 @@ function Home() {
               <div className="space-y-3 text-gray-300">
                 <p className="flex items-center space-x-2">
                   <span>📞</span>
-                  <span>+91 9876543210</span>
+                  <span>+91 7383644844</span>
                 </p>
                 <p className="flex items-center space-x-2">
                   <span>📧</span>
-                  <span>info@signaturetourntravels.com</span>
+                  <span>signaturewtt@gmail.com</span>
                 </p>
                 <p className="flex items-center space-x-2">
                   <span>📍</span>
-                  <span>123 Travel Street, Mumbai, India</span>
+                  <span>3rd Floor Aazan complex Opp.Abu bhai kapadwala, Juhapura, Ahmedabad Gujarat 380051</span>
+                </p>
+                <p className="flex items-center space-x-2">
+                  <span>🏢</span>
+                  <span className="text-sm">Registered Office: 26 Noor-e-Mohmadi society Dholka, Ahmedabad Gujarat 382225</span>
                 </p>
               </div>
             </div>
@@ -1777,9 +1778,9 @@ function Home() {
 
           <div className="border-t border-[#F8F4E5]/30 pt-8 text-center">
             <div className="flex justify-center mb-4">
-              <img src="/logo.png" alt="Signature Tours" className="h-8 w-auto opacity-70" />
+              <img src="/logo.png" alt="Signature world tour and travels" className="h-8 w-auto opacity-70" />
             </div>
-            <p className="text-gray-300">&copy; 2024 <span className="text-[#F8F4E5] font-semibold">Signature Tours and Travels</span>. All rights reserved.</p>
+            <p className="text-gray-300">&copy; 2025 <span className="text-[#F8F4E5] font-semibold">Signature world tour and travels</span>. All rights reserved.</p>
             <p className="text-[#F8F4E5]/60 text-sm mt-2">Your trusted partner for unforgettable travel experiences</p>
           </div>
         </div>
@@ -1793,7 +1794,7 @@ function Home() {
               <div className="w-16 h-16 bg-gradient-to-r from-[#F8F4E5] to-[#F6FEFE] rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-[#063955] text-2xl">✓</span>
               </div>
-              <img src="/logo.png" alt="Signature Tours" className="h-10 w-auto mx-auto mb-4 opacity-80" />
+              <img src="/logo.png" alt="Signature world tour and travels" className="h-10 w-auto mx-auto mb-4 opacity-80" />
               <h3 className="text-2xl font-bold text-[#063955] mb-4">
                 Thank You for Your Enquiry!
               </h3>

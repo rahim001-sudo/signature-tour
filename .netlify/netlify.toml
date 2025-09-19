@@ -1,13 +1,12 @@
 plugins = []
 headers = []
-redirects = []
 
 [functions]
 
 [functions."*"]
 
 [build]
-publish = "F:\\bestStudentClone\\signaturePg\\signatur\\build"
+publish = "F:\\bestStudentClone\\signaturePg\\signature-tour\\build"
 publishOrigin = "ui"
 commandOrigin = "ui"
 command = "npm run build"
@@ -25,3 +24,15 @@ command = "npm run build"
 [build.processing.js]
 
 [build.services]
+
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
