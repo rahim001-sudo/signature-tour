@@ -1098,6 +1098,14 @@ function Home() {
         id: doc.id,
         ...doc.data()
       }));
+        productsData.sort((a, b) =>{ 
+          let aa = a.position || 0
+          let bb = b.position || 0
+          if(aa > bb) return 1
+          if(aa < bb) return -1
+          return 0
+        });
+       
         setServices(productsData)
        })
 
@@ -1185,6 +1193,8 @@ function Home() {
     }
   ];
 
+  let navigate = useNavigate()
+
   return (
     <div className="min-h-screen brand-pattern">
       {/* Toast Notification */}
@@ -1238,7 +1248,7 @@ function Home() {
             <nav className="hidden md:flex space-x-8 items-center">
               <a href="#home" className="text-white hover:text-[#F8F4E5] transition-colors duration-300">Home</a>
               <a href="#services" className="text-white hover:text-[#F8F4E5] transition-colors duration-300">Services</a>
-              <a href="#hajj-umrah" className="text-white hover:text-[#F8F4E5] transition-colors duration-300">Hajj & Umrah</a>
+              <a href="#hajj-umrah" className="text-white hover:text-[#F8F4E5] transition-colors duration-300" onClick={() => navigate(`/travel-package?name=${encodeURIComponent("Umrah & Hajj")}&id=${"1"}`)}>Hajj & Umrah</a>
               <a href="#packages" className="text-white hover:text-[#F8F4E5] transition-colors duration-300">Packages</a>
               <Link to="/about" className="text-white hover:text-[#F8F4E5] transition-colors duration-300">About</Link>
               <Link to="/privacy" className="text-white hover:text-[#F8F4E5] transition-colors duration-300">Privacy</Link>
@@ -1282,7 +1292,7 @@ function Home() {
               <div className="flex flex-col space-y-3">
                 <a href="#home" className="text-white hover:text-[#F8F4E5] transition-colors duration-300" onClick={() => setIsMenuOpen(false)}>Home</a>
                 <a href="#services" className="text-white hover:text-[#F8F4E5] transition-colors duration-300" onClick={() => setIsMenuOpen(false)}>Services</a>
-                <a href="#hajj-umrah" className="text-white hover:text-[#F8F4E5] transition-colors duration-300" onClick={() => setIsMenuOpen(false)}>Hajj & Umrah</a>
+                <a href="#hajj-umrah" className="text-white hover:text-[#F8F4E5] transition-colors duration-300" onClick={() => navigate(`/travel-package?name=${encodeURIComponent("Umrah & Hajj")}&id=${"1"}`)}>Hajj & Umrah</a>
                 <a href="#packages" className="text-white hover:text-[#F8F4E5] transition-colors duration-300" onClick={() => setIsMenuOpen(false)}>Packages</a>
                 <Link to="/about" className="text-white hover:text-[#F8F4E5] transition-colors duration-300" onClick={() => setIsMenuOpen(false)}>About</Link>
                 <Link to="/privacy" className="text-white hover:text-[#F8F4E5] transition-colors duration-300" onClick={() => setIsMenuOpen(false)}>Privacy</Link>
@@ -1424,12 +1434,12 @@ function Home() {
             </div>
 
             {/* Right side - Inquiry Form */}
-            <div className={`bg-gradient-to-br from-black via-black to-black rounded-2xl p-4 shadow-2xl border-2 border-[#F8F4E5]/40 backdrop-blur-sm transition-all duration-1000 ${isVisible.home ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'} hover:shadow-3xl hover:border-[#F8F4E5]/60`}>
+           <section id="enquiry" className={`bg-gradient-to-br from-black via-black to-black rounded-2xl p-4 shadow-2xl border-2 border-[#F8F4E5]/40 backdrop-blur-sm transition-all duration-1000 ${isVisible.home ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'} hover:shadow-3xl hover:border-[#F8F4E5]/60`} style={{scrollMarginTop: '2rem'}}>
               <div className="text-center mb-4">
                 <div className="w-12 h-12 bg-[#F2F2F2] rounded-full flex items-center justify-center mx-auto mb-2 shadow-lg">
                   <span className="text-lg text-[#063955]">✈️</span>
                 </div>
-                <h3 className="text-lg font-bold text-[white] mb-1">Quick Inquiry</h3>
+                <a href='#enquiry' className="text-lg font-bold text-[white] mb-1">Quick Inquiry</a>
                 <p className="text-xs text-[white]">Get instant quotes & expert advice</p>
                 <div className="w-12 h-0.5 bg-gradient-to-r from-[#F8F4E5] to-[#F6FEFE] mx-auto mt-2 rounded-full"></div>
               </div>
@@ -1549,7 +1559,7 @@ function Home() {
                   </a>
                 </div>
               </div>
-            </div>
+            </section>
           </div>
         </div>
       </section>
@@ -1909,10 +1919,12 @@ const ServicesSection = ({ services = [] }) => {
                       <span className="text-xs">Email</span>
                     </a>
                   </div>
-                  
-                  <button className="w-full bg-gradient-to-r from-yellow-300 to-yellow-400 hover:from-yellow-400 hover:to-yellow-300 text-blue-900 px-4 py-2.5 rounded-lg font-bold transition-all duration-300 transform group-hover:scale-105 shadow-md text-sm">
-                    BOOK NOW
-                  </button>
+<a 
+  href="#enquiry" 
+  className="w-full block bg-gradient-to-r from-yellow-300 to-yellow-400 hover:from-yellow-400 hover:to-yellow-300 text-blue-900 px-4 py-2.5 rounded-lg font-bold transition-all duration-300 transform group-hover:scale-105 shadow-md text-sm text-center"
+>
+  BOOK NOW
+</a>    
                 </div>
               </div>
             ))}
@@ -2217,7 +2229,7 @@ export const ImageFormDialog = ({
     setImagePreview(null);
     setShowSuccess(false);
   };
-
+  
   return (
     <>
       {/* Trigger Button */}
