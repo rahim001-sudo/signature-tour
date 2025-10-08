@@ -1249,7 +1249,7 @@ function Home() {
               <a href="#home" className="text-white hover:text-[#F8F4E5] transition-colors duration-300">Home</a>
               <a href="#services" className="text-white hover:text-[#F8F4E5] transition-colors duration-300">Services</a>
               <a href="#hajj-umrah" className="text-white hover:text-[#F8F4E5] transition-colors duration-300" onClick={() => navigate(`/travel-package?name=${encodeURIComponent("Umrah & Hajj")}&id=${"1"}`)}>Hajj & Umrah</a>
-              <a href="#packages" className="text-white hover:text-[#F8F4E5] transition-colors duration-300">Packages</a>
+              <a href="#hajj-umrah" className="text-white hover:text-[#F8F4E5] transition-colors duration-300">Packages</a>
               <Link to="/about" className="text-white hover:text-[#F8F4E5] transition-colors duration-300">About</Link>
               <Link to="/privacy" className="text-white hover:text-[#F8F4E5] transition-colors duration-300">Privacy</Link>
               <a href="#contact" className="text-white hover:text-[#F8F4E5] transition-colors duration-300">Contact</a>
@@ -1293,7 +1293,7 @@ function Home() {
                 <a href="#home" className="text-white hover:text-[#F8F4E5] transition-colors duration-300" onClick={() => setIsMenuOpen(false)}>Home</a>
                 <a href="#services" className="text-white hover:text-[#F8F4E5] transition-colors duration-300" onClick={() => setIsMenuOpen(false)}>Services</a>
                 <a href="#hajj-umrah" className="text-white hover:text-[#F8F4E5] transition-colors duration-300" onClick={() => navigate(`/travel-package?name=${encodeURIComponent("Umrah & Hajj")}&id=${"1"}`)}>Hajj & Umrah</a>
-                <a href="#packages" className="text-white hover:text-[#F8F4E5] transition-colors duration-300" onClick={() => setIsMenuOpen(false)}>Packages</a>
+                <a href="#hajj-umrah" className="text-white hover:text-[#F8F4E5] transition-colors duration-300" onClick={() => setIsMenuOpen(false)}>Packages</a>
                 <Link to="/about" className="text-white hover:text-[#F8F4E5] transition-colors duration-300" onClick={() => setIsMenuOpen(false)}>About</Link>
                 <Link to="/privacy" className="text-white hover:text-[#F8F4E5] transition-colors duration-300" onClick={() => setIsMenuOpen(false)}>Privacy</Link>
                 <a href="#contact" className="text-white hover:text-[#F8F4E5] transition-colors duration-300" onClick={() => setIsMenuOpen(false)}>Contact</a>
@@ -1781,52 +1781,59 @@ function Home() {
   );
 }
 
- function CertificateGallery({ certificates }) {
-  const [selectedCert, setSelectedCert] = useState(null);
 
+function CertificateGallery({ certificates }) {
   return (
     <div className="w-full">
-      {/* Logo Grid */}
+      {/* Certificate Grid */}
       <div className="flex flex-wrap gap-4 justify-center">
         {certificates.map((cert) => (
           <button
             key={cert.id}
-            onClick={() => setSelectedCert(cert)}
+            onClick={() => {
+              const newTab = window.open();
+              if (newTab) {
+                newTab.document.write(`
+                  <html>
+                    <head>
+                      <title>Certificate ${cert.id}</title>
+                    </head>
+                    <body style="
+                      margin:0;
+                      display:flex;
+                      align-items:center;
+                      justify-content:center;
+                      background:#000;
+                      height:100vh;
+                      width:100vw;
+                    ">
+                      <img 
+                        src="${cert.image2}" 
+                        alt="Certificate ${cert.id}" 
+                        style="max-width:100vw;max-height:100vh;object-contain;"
+                      />
+                    </body>
+                  </html>
+                `);
+                newTab.document.close();
+              }
+            }}
             className="w-[100px] h-[100px] bg-white shadow-md rounded-xl flex items-center justify-center overflow-hidden hover:scale-105 transition-transform duration-300"
           >
             <img
               src={cert.image1}
-              alt={`Certificate ${cert.id}`}
+              alt={`Thumbnail ${cert.id}`}
               className="w-full h-full object-contain"
             />
           </button>
         ))}
       </div>
-
-      {/* Dialog / Modal */}
-      {selectedCert && (
-        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-3xl w-[90%] p-4 relative">
-            {/* Close Button */}
-            <button
-              onClick={() => setSelectedCert(null)}
-              className="absolute top-2 right-2 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center"
-            >
-              ✕
-            </button>
-
-            {/* Full Image */}
-            <img
-              src={selectedCert.image2}
-              alt={`Certificate ${selectedCert.id}`}
-              className="w-full h-auto object-contain rounded-lg"
-            />
-          </div>
-        </div>
-      )}
     </div>
   );
 }
+
+
+
 
 const ServicesSection = ({ services = [] }) => {
   const [isVisible, setIsVisible] = useState({
